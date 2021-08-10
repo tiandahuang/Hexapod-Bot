@@ -1,0 +1,9 @@
+#ifndef SERVO_CONSTANTS_H
+#define SERVO_CONSTANTS_H
+
+#define SERVOMIN 100
+#define SERVOMAX 460
+#define SERVOMID 280
+#define SERVO_FREQ 50
+
+#endif // SERVO_CONSTANTS_H
