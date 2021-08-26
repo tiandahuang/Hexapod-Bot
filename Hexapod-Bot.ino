@@ -1,14 +1,18 @@
 #include "servo-operations.h"
-#include "servo-test.h"
+#include "timer2.h"
+
+void heartbeat() {
+    digitalWrite(LED_BUILTIN, digitalRead(LED_BUILTIN) ^ 0x1);
+}
 
 void setup() {
+    pinMode(LED_BUILTIN, OUTPUT);
+
     Serial.begin(115200);
     pwmInit();
-    delay(50);
+    delayMicroseconds(50000);
 
     commandSwitch(3); // Verbose on
-
-    // Tests::calibrateOffsets(&pwm_R);
 }
 
 void loop() {

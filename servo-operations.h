@@ -10,6 +10,8 @@ void commandSwitch(uint8_t command_num); // avoid commands that read input buf
 
 uint8_t serialInputAndParse();
 void cmdAngleAscii(const char* input, bool mirrored);
+void sequenceLoadNext();
+void cmdStartSequence();
 void resetServoPos();
 void cmdFreezeAllMotorFunctions();
 

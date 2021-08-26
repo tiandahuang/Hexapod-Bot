@@ -1,6 +1,7 @@
 #include "servo-operations.h"
 #include "servo-joint-class.h"
 #include "servo-constants.h"
+#include "timer2.h"
 
 // Servo breakout boards
 Adafruit_PWMServoDriver pwm_L = Adafruit_PWMServoDriver();
@@ -71,7 +72,8 @@ void pwmInit() {
     pwm_R.begin();
     pwm_R.setOscillatorFrequency(27000000);
     pwm_R.setPWMFreq(SERVO_FREQ);
-    delay(50);
+
+    timer2Init(249, sequenceLoadNext);
 }
 
 void updateServoPos() {
@@ -120,6 +122,14 @@ void cmdAngleAscii(const char* input, bool mirrored) {
     }
 }
 
+void sequenceLoadNext() {
+    // TODO
+}
+
+void cmdStartSequence() {
+    // TODO
+}
+
 // Unsafe quick reset to initial positions
 void resetServoPos() {
     if (VerboseMode) {
@@ -136,7 +146,9 @@ void cmdFreezeAllMotorFunctions() {
     if (VerboseMode) {
         Serial.println(F("PAUSE, \"Continue\" to resume"));
     }
+    timer2Disarm();
     while (serialInputAndParse() != 6);
+    timer2Arm();
 }
 
 /**------------------------------------------------
@@ -163,6 +175,7 @@ void commandSwitch(uint8_t command_num) {
             cmdAngleAscii(InputBuffer, true);
             break;
         case 2 :    // "Sequence ...", begin scripted movement sequence
+            cmdStartSequence();
             break;
         case 3 :    // "Analysis", verbose mode, echo all commands
             VerboseMode = true;
@@ -170,6 +183,7 @@ void commandSwitch(uint8_t command_num) {
             break;
         case 4 :    // "Put yourself away", reset position
             resetServoPos();
+            break;
         case 5 :    // "Freeze all motor functions"
             cmdFreezeAllMotorFunctions();
             break;
