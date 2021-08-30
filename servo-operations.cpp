@@ -2,6 +2,7 @@
 #include "servo-joint-class.h"
 #include "servo-constants.h"
 #include "timer2.h"
+#include "movement-sequence.h"
 
 // Servo breakout boards
 Adafruit_PWMServoDriver pwm_L = Adafruit_PWMServoDriver();
@@ -62,6 +63,12 @@ static char InputBuffer[30];
 // Buffer for input comparison
 static char CompareBuffer[30];
 
+// Buffer for loading movement sequence, volatile since it will be modified by ISR
+static volatile jointMove SequenceBuffer;
+
+// Current movement sequence number and ID;
+static volatile uint8_t SequenceNum, SequenceID;
+
 // Verbosity
 bool VerboseMode = false;
 
@@ -115,19 +122,36 @@ void cmdAngleAscii(const char* input, bool mirrored) {
                 if ((i % 3) == (num % 3)) JointList[i]->setAngle(angle);
             }
         }
-        JointList[num]->setAngle(angle);
+        else {
+            JointList[num]->setAngle(angle);
+        }
     }
     else if (VerboseMode) {
         Serial.println(F("Error, invalid Servo ID"));                           // optional, diagnostics only
     }
 }
 
+// Run in ISR
+// Loads the next servo position but does not actually move the servo
 void sequenceLoadNext() {
-    // TODO
+    fetchMove(&SequenceBuffer, SequenceID, SequenceNum);
+    loadDelay(SequenceBuffer.delay);
+    JointList[SequenceBuffer.num]->setAngle(SequenceBuffer.angle);
+    if (VerboseMode) {  // This runs in ISR so VerboseMode will clutter CPU time
+        Serial.print(F("[num, angle, delay] : "));
+        Serial.print(SequenceBuffer.num); Serial.print(", ");
+        Serial.print(SequenceBuffer.angle); Serial.print(", ");
+        Serial.println(SequenceBuffer.delay);
+    }
+    // TODO Add Stop Sequence
+    SequenceNum++;
 }
 
+// Starts a movement sequence by arming interrupts and setting the sequence number
 void cmdStartSequence() {
-    // TODO
+    SequenceNum = 0;    // TODO string input switch
+    SequenceID = 0;
+    timer2Arm();
 }
 
 // Unsafe quick reset to initial positions

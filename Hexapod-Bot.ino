@@ -16,6 +16,7 @@ void setup() {
 }
 
 void loop() {
+    heartbeat();
     inputCommand();
     updateServoPos();
 }
