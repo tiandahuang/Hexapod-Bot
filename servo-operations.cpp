@@ -134,7 +134,7 @@ void cmdAngleAscii(const char* input, bool mirrored) {
 // Run in ISR
 // Loads the next servo position but does not actually move the servo
 void sequenceLoadNext() {
-    fetchMove(&SequenceBuffer, SequenceID, SequenceNum);
+    fetchMove(const_cast<jointMove*>(&SequenceBuffer), SequenceID, SequenceNum);
     loadDelay(SequenceBuffer.delay);
     JointList[SequenceBuffer.num]->setAngle(SequenceBuffer.angle);
     if (VerboseMode) {  // This runs in ISR so VerboseMode will clutter CPU time

@@ -9,6 +9,6 @@ struct jointMove {
     uint16_t delay;
 };
 
-void fetchMove(volatile jointMove *buffer, int sequence_id, int sequence_num);
+void fetchMove(jointMove *buffer, uint8_t sequence_id, uint8_t sequence_num);
 
 #endif // MOVEMENT_SEQUENCE_H
