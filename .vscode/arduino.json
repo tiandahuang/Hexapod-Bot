@@ -1,12 +1,18 @@
 {
 <<<<<<< HEAD
+<<<<<<< HEAD
     "board": "arduino:avr:nano",
     "port": "COM5"
 =======
+=======
+>>>>>>> parent of cc4b2a6 (Delete .vscode directory)
     "configuration": "cpu=atmega328old",
     "board": "arduino:avr:nano",
     "programmer": "arduino:avrispmkii",
     "port": "COM5",
     "sketch": "Hexapod-Bot.ino"
+<<<<<<< HEAD
+>>>>>>> parent of cc4b2a6 (Delete .vscode directory)
+=======
 >>>>>>> parent of cc4b2a6 (Delete .vscode directory)
 }
