@@ -1,0 +1,5 @@
+{
+    "board": "arduino:avr:nano",
+    "port": "COM5",
+    "programmer": "arduino:avrispmkii"
+}
